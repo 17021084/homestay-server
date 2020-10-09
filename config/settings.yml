@@ -1,0 +1,15 @@
+validations:
+  user:
+    min_age: 10
+    email_regex: !ruby/regexp '/\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i'
+    phone_regex: !ruby/regexp '/\A[0-9]{7,11}\z/'
+    name_minlength: 5
+    name_maxlength: 50
+    email_minlength: 5
+    email_maxlength: 255
+    phone_minlength: 7
+    phone_maxlength: 11
+    password_minlength: 6
+    password_maxlength: 15
+pagination:
+  per_page: 20

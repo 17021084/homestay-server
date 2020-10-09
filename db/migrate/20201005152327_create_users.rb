@@ -7,9 +7,11 @@ class CreateUsers < ActiveRecord::Migration[6.0]
       t.string :password_digest
       t.string :phone_number
       t.boolean :is_host, default: false
-      t.string :address
+      t.references :city
 
       t.timestamps
     end
+
+    add_index :users, :email, unique: true
   end
 end
