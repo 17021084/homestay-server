@@ -8,7 +8,7 @@ FactoryBot.define do
     bed_number { 1 }
     max_guest { 1 }
     latitude { 1.5 }
-    longtitude { 1.5 }
+    longitude { 1.5 }
     address { "MyString" }
     base_price { 1.5 }
     extra_fee { 1.5 }

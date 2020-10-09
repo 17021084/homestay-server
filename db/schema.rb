@@ -10,9 +10,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_05_165126) do
+ActiveRecord::Schema.define(version: 2020_10_08_145809) do
+
+  create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.bigint "byte_size", null: false
+    t.string "checksum", null: false
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
 
   create_table "amenities", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci", force: :cascade do |t|
+    t.string "service_type"
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -36,7 +58,6 @@ ActiveRecord::Schema.define(version: 2020_10_05_165126) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["place_id"], name: "index_bookings_on_place_id"
-    t.index ["user_id", "place_id"], name: "index_bookings_on_user_id_and_place_id", unique: true
     t.index ["user_id"], name: "index_bookings_on_user_id"
   end
 
@@ -53,17 +74,17 @@ ActiveRecord::Schema.define(version: 2020_10_05_165126) do
   create_table "cities", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci", force: :cascade do |t|
     t.string "name"
     t.string "sub_name"
-    t.float "longtitude"
-    t.float "latitude"
+    t.decimal "longitude", precision: 15, scale: 10
+    t.decimal "latitude", precision: 15, scale: 10
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "districts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci", force: :cascade do |t|
     t.string "name"
-    t.float "longtitude"
-    t.float "latitude"
-    t.bigint "city_id"
+    t.decimal "longitude", precision: 15, scale: 10
+    t.decimal "latitude", precision: 15, scale: 10
+    t.bigint "city_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["city_id"], name: "index_districts_on_city_id"
@@ -71,27 +92,27 @@ ActiveRecord::Schema.define(version: 2020_10_05_165126) do
 
   create_table "host_informations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci", force: :cascade do |t|
     t.boolean "is_super", default: false
-    t.bigint "user_id"
+    t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_host_informations_on_user_id"
   end
 
   create_table "places", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci", force: :cascade do |t|
-    t.bigint "host_id"
     t.boolean "is_verified", default: false
-    t.bigint "location_id"
     t.string "name"
-    t.string "thumbnail"
-    t.integer "bed_number"
+    t.integer "bedroom_number"
+    t.integer "bathroom_number"
     t.integer "max_guests"
-    t.float "latitude"
-    t.float "longtitude"
+    t.decimal "latitude", precision: 15, scale: 10
+    t.decimal "longitude", precision: 15, scale: 10
     t.string "address"
     t.float "base_price"
     t.float "extra_fee"
     t.float "rating"
     t.boolean "is_archived", default: false
+    t.bigint "location_id"
+    t.bigint "host_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["host_id"], name: "index_places_on_host_id"
@@ -130,9 +151,16 @@ ActiveRecord::Schema.define(version: 2020_10_05_165126) do
     t.string "password_digest"
     t.string "phone_number"
     t.boolean "is_host", default: false
-    t.string "address"
+    t.bigint "city_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["city_id"], name: "index_users_on_city_id"
+    t.index ["email"], name: "index_users_on_email", unique: true
   end
 
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "districts", "cities"
+  add_foreign_key "host_informations", "users"
+  add_foreign_key "places", "districts", column: "location_id"
+  add_foreign_key "places", "users", column: "host_id"
 end

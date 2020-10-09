@@ -12,6 +12,5 @@ class CreateBookings < ActiveRecord::Migration[6.0]
 
     add_index :bookings, :user_id
     add_index :bookings, :place_id
-    add_index :bookings, [:user_id, :place_id], unique: true
   end
 end
