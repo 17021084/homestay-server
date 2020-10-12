@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   VALID_EMAIL_REGEX = Settings.validations.user.email_regex
   VALID_PHONE_REGEX = Settings.validations.user.phone_regex
+  USER_CREATE_PARAMS = %i(full_name email password password_confirmation phone_number city_id).freeze
 
   belongs_to :city
   has_one :host_information, dependent: :destroy
