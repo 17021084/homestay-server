@@ -200,7 +200,9 @@ quang = User.create(full_name: "Nhat Quang",
   password: "123456",
   phone_number: "0977860499",
   is_host: 1,
-  city_id: 1)
+  city_id: 1,
+  activated: true,
+  activated_at: Time.zone.now)
 
 HostInformation.create(user: quang, is_super: 1)
 
@@ -209,7 +211,9 @@ khoa = User.create(full_name: "Anh Khoa",
   password: "123456",
   phone_number: "0977860498",
   is_host: 1,
-  city_id: rand(1..3))
+  city_id: rand(1..3),
+  activated: true,
+  activated_at: Time.zone.now)
 
 HostInformation.create(user: khoa, is_super: 1)
 
@@ -218,7 +222,9 @@ huy = User.create(full_name: "Quang Huy",
   password: "123456",
   phone_number: "0977860497",
   is_host: 1,
-  city_id: rand(1..3))
+  city_id: rand(1..3),
+  activated: true,
+  activated_at: Time.zone.now)
 
 HostInformation.create(user: huy, is_super: 1)
 
@@ -227,7 +233,9 @@ trung = User.create(full_name: "Quang Trung",
   password: "123456",
   phone_number: "0977860496",
   is_host: 1,
-  city_id: rand(1..3))
+  city_id: rand(1..3),
+  activated: true,
+  activated_at: Time.zone.now)
 
 HostInformation.create(user: trung, is_super: 1)
 
@@ -253,7 +261,10 @@ end
   password: "123456",
   phone_number: phone_number,
   is_host: is_host,
-  city_id: city_id)
+  city_id: city_id,
+  activated: true,
+  activated_at: Time.zone.now
+  )
 
   if new_user.is_host
     HostInformation.create!(user: new_user, is_super: rand(0..1))

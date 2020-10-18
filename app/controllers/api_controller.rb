@@ -9,8 +9,11 @@ class ApiController < ApplicationController
 
     @current_user = User.find_by id: payload["id"]
 
-    @current_user.nil? &&
-      render(json: {success: false, message: "Unavailable User"}, status: :not_found)
+    return render(json: {success: false, message: "Unavailable User"}, status: :not_found) unless @current_user
+
+    unless @current_user.activated?
+      render(json: {success: false, message: "Account hasn't been activated"}, status: :not_found)
+    end
   rescue JWT::DecodeError
     render json: {success: false, message: "Invalid Token"}, status: :unauthorized
   end

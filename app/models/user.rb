@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  attr_accessor :activation_token
   VALID_EMAIL_REGEX = Settings.validations.user.email_regex
   VALID_PHONE_REGEX = Settings.validations.user.phone_regex
   USER_CREATE_PARAMS = %i(full_name email password password_confirmation phone_number city_id).freeze
@@ -34,10 +35,41 @@ class User < ApplicationRecord
   validates :is_host, inclusion: [true, false]
 
   before_save :downcase_email
+  before_create :create_activation_digest
 
   has_secure_password
 
+  def register
+    UserMailer.account_activation(self).deliver_now unless activated
+    JsonWebToken.encode id: @user.id, is_host: false
+  end
+
+  def authenticated? attribute, token
+    digest = send("#{attribute}_digest")
+    return false if digest.nil?
+
+    BCrypt::Password.new(digest).is_password?(token)
+  end
+
+  def activate
+    update(activated: true)
+    update(activated_at: Time.zone.now)
+  end
+
+  def self.new_token
+    SecureRandom.urlsafe_base64
+  end
+
+  def self.digest string
+    cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST : BCrypt::Engine.cost
+    BCrypt::Password.create(string, cost: cost)
+  end
+
   private
+  def create_activation_digest
+    self.activation_token = User.new_token
+    self.activation_digest = User.digest(activation_token)
+  end
 
   def downcase_email
     email.downcase!
