@@ -38,6 +38,15 @@ class User < ApplicationRecord
   before_create :create_activation_digest
 
   has_secure_password
+  def self.from_omniauth auth
+    where(email: auth.info.email).first_or_initialize.tap do |user|
+      user.id = auth.uid
+      user.name = auth.info.name
+      user.google_id = auth.credentials.token
+      user.google_id_expires_at = Time.zone.at(auth.credentials.expires_at)
+      user.save!
+    end
+  end
 
   def register
     UserMailer.account_activation(self).deliver_now unless activated

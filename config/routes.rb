@@ -6,6 +6,7 @@ Rails.application.routes.draw do
       scope :auth do
         post "/login", to: "authentication#create"
         get "/me", to: "authentication#show"
+        get "/:provider/callback", to: "authentication#google"
       end
     end
   end

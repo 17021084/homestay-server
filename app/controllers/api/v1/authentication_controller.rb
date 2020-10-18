@@ -14,6 +14,14 @@ class Api::V1::AuthenticationController < ApiController
     end
   end
 
+  def google
+    # user = User.from_omniauth(request.env["omniauth.auth"])
+    auth = request.env["omniauth.auth"]
+    # debugger
+    # render json: params[:provider]
+    render json: auth
+  end
+
   def show
     render :show
   end
