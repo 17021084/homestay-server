@@ -3,6 +3,7 @@ class User < ApplicationRecord
   VALID_EMAIL_REGEX = Settings.validations.user.email_regex
   VALID_PHONE_REGEX = Settings.validations.user.phone_regex
   USER_CREATE_PARAMS = %i(full_name email password password_confirmation phone_number city_id).freeze
+  USER_UPDATE_PARAMS = %i(full_name password password_confirmation phone_number city_id is_host).freeze
 
   belongs_to :city
   has_one :host_information, dependent: :destroy
@@ -41,7 +42,17 @@ class User < ApplicationRecord
 
   def register
     UserMailer.account_activation(self).deliver_now unless activated
-    JsonWebToken.encode id: @user.id, is_host: false
+    JsonWebToken.encode id: id, is_host: false
+  end
+
+  def login_check password
+    if authenticated?("password", password) && activated?
+      :success
+    elsif !authenticated?("password", password)
+      :invalid_password
+    elsif !activated?
+      :unactivated
+    end
   end
 
   def authenticated? attribute, token
