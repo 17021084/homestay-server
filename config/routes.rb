@@ -11,6 +11,12 @@ Rails.application.routes.draw do
         post "/login", to: "authentication#create"
         get "/me", to: "authentication#show"
       end
+
+      scope :places do
+        post "/search", to: "places#search"
+      end
+
     end
   end
+  get "/test_header", to: "api#test_header"
 end
