@@ -449,7 +449,7 @@ end
   total_user_id = User.ids
   total_user_id.delete(get_host_id(place_id))
   user_id = total_user_id.sample
-  check_in_date = rand(2.weeks).seconds.since(1.day.ago)
+  check_in_date = rand(2.weeks).seconds.since(1.day.ago).midnight
   check_out_date = check_in_date + rand(1..7).days
   total_price = 50
 

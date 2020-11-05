@@ -14,7 +14,7 @@ class Api::V1::AuthenticationController < ApiController
     when "unactivated"
       render json: {success: false, message: "Account wasnt activated"}, status: :bad_request
     else
-      render json: {success: false, message: "login fail"}, status: :bad_request
+      render json: {success: false, message: "Login fail"}, status: :bad_request
     end
   end
 

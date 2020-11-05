@@ -1,4 +1,6 @@
 class Place < ApplicationRecord
+  SEARCHING_PARAMS = [:city_id, :district_id, :check_in_date, :check_out_date, :guests].freeze
+
   has_one_attached :thumbnail
   has_many_attached :homestay_photos
   has_and_belongs_to_many :amenities
@@ -8,4 +10,12 @@ class Place < ApplicationRecord
   has_many :reviews, dependent: :destroy
   belongs_to :host, class_name: User.name, foreign_key: :host_id
   belongs_to :location, class_name: District.name, foreign_key: :location_id
+
+  delegate :name, to: :location, prefix: true
+  delegate :full_name, to: :host, prefix: true
+
+  scope :order_by_rating, ->{left_joins(:bookings).order rating: :desc}
+  scope :location, ->(district_id){where location_id: district_id}
+  scope :max_guests, ->(guests){where("max_guests >= ?", guests)}
+  scope :available_room, ->(check_in, check_out){where(Settings.query.available_room, check_in, check_out)}
 end

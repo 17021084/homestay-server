@@ -2,34 +2,39 @@ class SearchPlaceService < ApplicationService
   def initialize params
     @city_id = params[:city_id]
     @district_id = params[:district_id]
-    @check_in_date = format_date params[:check_in_date]
-    @check_out_date = format_date params[:check_out_date]
-    @max_guests = params[:max_guests]
+    @check_in_date = params[:check_in_date]
+    @check_out_date = params[:check_out_date]
+    @guests = params[:guests]
     @page = params[:page]
     @per = params[:per]
   end
 
   def perform
-    return {success: false, message: "invalid check in past"} if @check_in_date.to_datetime.past?
+    return {success: false, message: "Invalid date"} unless is_date_valid?
 
-    return {success: false, message: "check in date before check out date"} unless check_check_out_date?
+    return {success: false, message: "Invalid location"} unless is_location_valid? @city_id, @district_id
 
-    places = Place.select("Places.*, cities.name as city_name, districts.name as district_name ")
-                  .left_outer_joins(:bookings)
-                  .joins(location: :city)
-                  .where(free_places_condition, check_in: @check_in_date, check_out: @check_out_date)
-                  .where(cities: {id: @city_id})
-                  .where(districts: {id: @district_id})
-                  .where("max_guests >= ?", @max_guests)
+    places = Place.order_by_rating
+                  .location(@district_id)
+                  .max_guests(@guests)
+                  .available_room(@check_in_date, @check_out_date)
                   .group("places.id")
-    {success: true, data: places.page(@page).per(@per)}
-  end
-  private
-  def free_places_condition
-    "bookings.check_in_date is NULL OR bookings.check_out_date<:check_in OR :check_out < bookings.check_in_date"
+
+    {success: true, count: places.length, data: places}
   end
 
-  def check_check_out_date?
-    @check_in_date.to_datetime <= @check_out_date.to_datetime
+  private
+
+  def is_date_valid?
+    false if @check_in_date.in_time_zone.past?
+
+    @check_in_date.in_time_zone < @check_out_date.in_time_zone
+  end
+
+  def is_location_valid? city_id, district_id
+    cur_city_id = City.find_by(id: city_id).try(:id)
+    cur_district_id = District.find_by(id: district_id).try(:city_id)
+
+    return true if cur_city_id == cur_district_id
   end
 end
