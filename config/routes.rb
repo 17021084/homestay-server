@@ -12,11 +12,9 @@ Rails.application.routes.draw do
         get "/me", to: "authentication#show"
       end
 
-      scope :places do
-        post "/search", to: "places#search"
+      namespace :travellers do
+        resources :places, only: [:index]
       end
-
     end
   end
-  get "/test_header", to: "api#test_header"
 end
