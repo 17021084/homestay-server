@@ -14,19 +14,37 @@ class SearchPlaceService < ApplicationService
 
     return {success: false, message: "Invalid location"} unless is_location_valid? @city_id, @district_id
 
-    places = Place.order_by_rating
-                  .location(@district_id)
-                  .max_guests(@guests)
-                  .available_room(@check_in_date, @check_out_date)
-                  .group("places.id")
-
-    {success: true, count: places.length, data: places}
+    load_places
+    search_places
+    {success: true, count: @places.length, data: @places}
   end
 
   private
+  def load_places
+    @places = Place.select_place
+                   .order_by_rating
+                   .location(@district_id)
+                   .max_guests(@guests)
+                   .to_a
+  end
+
+  def search_places
+    flag = []
+    @places.each do |place|
+      next if place.check_in_date.nil? ||
+              (place.check_out_date.in_time_zone < @check_in_date.in_time_zone) ||
+              (@check_out_date.in_time_zone < place.check_in_date.in_time_zone)
+
+      flag.push place.id
+    end
+    @places.uniq!{|p| p[:id]}
+    flag.each do |f|
+      @places.delete_if{|place| place[:id] == f}
+    end
+  end
 
   def is_date_valid?
-    false if @check_in_date.in_time_zone.past?
+    return false if @check_in_date.in_time_zone.past?
 
     @check_in_date.in_time_zone < @check_out_date.in_time_zone
   end

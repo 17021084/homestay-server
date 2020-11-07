@@ -17,5 +17,5 @@ class Place < ApplicationRecord
   scope :order_by_rating, ->{left_joins(:bookings).order rating: :desc}
   scope :location, ->(district_id){where location_id: district_id}
   scope :max_guests, ->(guests){where("max_guests >= ?", guests)}
-  scope :available_room, ->(check_in, check_out){where(Settings.query.available_room, check_in, check_out)}
+  scope :select_place, ->{select("bookings.check_in_date,bookings.check_out_date , places.*")}
 end
