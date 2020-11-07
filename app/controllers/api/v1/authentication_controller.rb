@@ -10,9 +10,9 @@ class Api::V1::AuthenticationController < ApiController
       valid_token = JsonWebToken.encode id: user.id, is_host: user.is_host
       render json: {success: true, token: valid_token}, status: :ok
     when "invalid_password"
-      render json: {success: false, message: "Incorrect password "}, status: :bad_request
+      render json: {success: false, message: "Incorrect password"}, status: :bad_request
     when "unactivated"
-      render json: {success: false, message: "Account wasnt activated"}, status: :bad_request
+      render json: {success: false, message: "Account wasn't activated"}, status: :bad_request
     else
       render json: {success: false, message: "Login fail"}, status: :bad_request
     end

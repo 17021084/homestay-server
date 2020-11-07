@@ -14,33 +14,38 @@ class SearchPlaceService < ApplicationService
 
     return {success: false, message: "Invalid location"} unless is_location_valid? @city_id, @district_id
 
-    load_places
-    search_places
-    {success: true, count: @places.length, data: @places}
+    all_places = get_places @district_id, @guests
+    available_places = get_available_places all_places, @check_in_date, @check_out_date
+
+    {success: true, count: available_places.length, data: available_places}
   end
 
   private
-  def load_places
-    @places = Place.select_place
-                   .order_by_rating
-                   .location(@district_id)
-                   .max_guests(@guests)
-                   .to_a
+
+  def get_places district_id, guests
+    Place.order_by_rating
+         .get_all_places
+         .location(district_id)
+         .max_guests(guests)
+         .to_a
   end
 
-  def search_places
-    flag = []
-    @places.each do |place|
-      next if place.check_in_date.nil? ||
-              (place.check_out_date.in_time_zone < @check_in_date.in_time_zone) ||
-              (@check_out_date.in_time_zone < place.check_in_date.in_time_zone)
+  def get_available_places all_places, check_in_date, check_out_date
+    reserved_places = []
 
-      flag.push place.id
+    all_places.each do |place|
+      next if place.check_in_date.nil? ||
+              (place.check_out_date.in_time_zone < check_in_date.in_time_zone) ||
+              (check_out_date.in_time_zone < place.check_in_date.in_time_zone)
+
+      reserved_places.push place.id
     end
-    @places.uniq!{|p| p[:id]}
-    flag.each do |f|
-      @places.delete_if{|place| place[:id] == f}
+    all_places.uniq!{|p| p[:id]}
+
+    reserved_places.each do |reserved_id|
+      all_places.delete_if{|place| place[:id] == reserved_id}
     end
+    all_places
   end
 
   def is_date_valid?
