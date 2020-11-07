@@ -13,5 +13,3 @@ validations:
     password_maxlength: 15
 pagination:
   per_page: 20
-query:
-  available_room: "bookings.check_in_date IS NULL OR bookings.check_out_date < ? OR ? < bookings.check_in_date"
