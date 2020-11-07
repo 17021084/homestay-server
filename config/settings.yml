@@ -13,3 +13,6 @@ validations:
     password_maxlength: 15
 pagination:
   per_page: 20
+query:
+  max_guests: "max_guests >= ?"
+  all_places: "bookings.check_in_date,bookings.check_out_date , places.*"
