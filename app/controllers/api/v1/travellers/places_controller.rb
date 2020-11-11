@@ -1,4 +1,6 @@
 class Api::V1::Travellers::PlacesController < ApplicationController
+  before_action :find_place, only: :show
+
   def index
     @places_response = SearchPlaceService.new(searching_params).perform
     if @places_response[:success]
@@ -11,7 +13,18 @@ class Api::V1::Travellers::PlacesController < ApplicationController
     end
   end
 
+  def show
+    render :show, status: :ok
+  end
+
   private
+
+  def find_place
+    @place = Place.find_by id: params[:id]
+    return if @place
+
+    render json: {success: false, message: "Place not found"}, status: :not_found
+  end
 
   def searching_params
     params.permit Place::SEARCHING_PARAMS
