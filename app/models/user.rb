@@ -1,10 +1,12 @@
 class User < ApplicationRecord
   attr_accessor :activation_token, :reset_token
+
   VALID_EMAIL_REGEX = Settings.validations.user.email_regex
   VALID_PHONE_REGEX = Settings.validations.user.phone_regex
   USER_CREATE_PARAMS = %i(full_name email password password_confirmation phone_number city_id).freeze
   USER_UPDATE_PARAMS = %i(full_name password password_confirmation phone_number city_id is_host).freeze
   USER_RESET_PARAMS = %i(password password_confirmation).freeze
+
   belongs_to :city
   has_one :host_information, dependent: :destroy
   has_many :places, foreign_key: :host_id, primary_key: :id, dependent: :destroy

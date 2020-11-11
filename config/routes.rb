@@ -13,7 +13,7 @@ Rails.application.routes.draw do
       end
 
       namespace :travellers do
-        resources :places, only: [:index]
+        resources :places, only: [:index, :show]
       end
     end
   end
