@@ -7,6 +7,7 @@ gem "bcrypt", "~> 3.1.7"
 gem "bootsnap", ">= 1.4.2", require: false
 gem "config"
 gem "dotenv-rails"
+gem "faker", "~> 2.14"
 gem "http_accept_language", "~> 2.0", ">= 2.0.5"
 gem "jbuilder"
 gem "jwt"
@@ -19,7 +20,6 @@ gem "ransack"
 
 group :development, :test do
   gem "byebug", platforms: [:mri, :mingw, :x64_mingw]
-  gem "faker", "~> 2.14"
   gem "hirb"
   gem "irb"
 

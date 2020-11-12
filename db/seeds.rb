@@ -389,7 +389,7 @@ def get_amenities ids
   Amenity.search_by_id ids
 end
 
-100.times do |n|
+200.times do |n|
   host_id = total_host_id.sample
 
   cur_city = get_city host_id
@@ -444,7 +444,7 @@ def get_host_id place_id
   Place.find_by(id: place_id).host_id
 end
 
-10.times do
+50.times do
   place_id = Place.ids.sample
   total_user_id = User.ids
   total_user_id.delete(get_host_id(place_id))

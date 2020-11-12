@@ -12,6 +12,8 @@ COPY Gemfile.lock ./Gemfile.lock
 
 RUN bundle install --without development test
 
+RUN bundle update
+
 COPY . .
 
 EXPOSE 3030
@@ -25,7 +27,7 @@ ENV RAILS_LOG_TO_STDOUT true
 
 ENV SECRET_KEY_BASE secret_key
 
-ENV LOCAL_TIME_ZONE hanoi
+ENV LOCAL_TIME_ZONE 'Hanoi'
 
 # Start the main process.
 CMD ["rails", "s", "-b", "0.0.0.0"]
