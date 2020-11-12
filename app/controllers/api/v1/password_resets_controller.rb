@@ -21,7 +21,7 @@ class Api::V1::PasswordResetsController < ApplicationController
 
   def edit
     # request.headers["resent_token"] = @user.resent_token
-    redirect_to "https://www.google.com.vn/"
+    redirect_to ENV["CLIENT_URL"]
   end
 
   def update

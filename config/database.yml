@@ -18,31 +18,14 @@ default: &default
   password: <%= ENV['DATABASE_PASSWORD'] %>
   socket: <%= ENV['DATABASE_SOCKET'] %>
 
-  
-
 development:
   <<: *default
   database: homestay_server_development
 
-# Warning: The database defined as "test" will be erased and
-# re-generated from your development database when you run "rake".
-# Do not set this db to the same as development or production.
 test:
   <<: *default
   database: homestay_server_test
 
-# As with config/credentials.yml, you never want to store sensitive information,
-# like your database password, in your source code. If your source code is
-# ever seen by anyone, they now have access to your database.
-#
-# Instead, provide the password as a unix environment variable when you boot
-# the app. Read https://guides.rubyonrails.org/configuring.html#configuring-a-database
-# for a full rundown on how to provide these environment variables in a
-# production deployment.
-#
-# On Heroku and other platform providers, you may have a full connection URL
-# available as an environment variable. For example:
-#
 #   DATABASE_URL="mysql2://myuser:mypass@localhost/somedatabase"
 #
 # You can use this database configuration with:
@@ -52,6 +35,11 @@ test:
 #
 production:
   <<: *default
-  database: homestay_server_production
-  username: homestay_server
-  password: <%= ENV['HOMESTAY_SERVER_DATABASE_PASSWORD'] %>
+  adapter: mysql2
+  encoding: utf8mb4
+  collation: utf8mb4_general_ci
+  database: <%= ENV['DB_NAME'] %>
+  username: <%= ENV['DB_USERNAME'] %>
+  password: <%= ENV['DB_PASSWORD'] %>
+  host: <%= ENV['DB_URL'] %>
+  port: 3306
