@@ -22,11 +22,7 @@ group :development, :test do
   gem "faker", "~> 2.14"
   gem "hirb"
   gem "irb"
-  gem "rails_best_practices", "~> 1.20"
-  gem "rubocop", "~> 0.89.1"
-  gem "rubocop-rails", "~> 2.3.2", require: false
 
-  # testing
   gem "airborne"
   gem "database_cleaner-active_record"
   gem "factory_bot_rails"
@@ -37,8 +33,15 @@ end
 
 group :development do
   gem "listen", "~> 3.2"
+  gem "rails_best_practices", "~> 1.20"
+  gem "rubocop", "~> 0.89.1"
+  gem "rubocop-rails", "~> 2.3.2", require: false
   gem "spring"
   gem "spring-watcher-listen", "~> 2.0.0"
+end
+
+group :production do
+  gem "aws-sdk-s3", require: false
 end
 
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
