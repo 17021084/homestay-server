@@ -18,24 +18,23 @@ gem "rack-cors"
 gem "rails", "~> 6.0.3", ">= 6.0.3.3"
 gem "ransack"
 
-group :development, :test do
+group :test do
   gem "byebug", platforms: [:mri, :mingw, :x64_mingw]
   gem "hirb"
   gem "irb"
-
-  gem "airborne"
-  gem "database_cleaner-active_record"
-  gem "factory_bot_rails"
-  gem "rspec-rails"
-  gem "shoulda-matchers", "~> 4.0"
-  gem "simplecov", require: false
 end
 
 group :development do
+  gem "airborne"
+  gem "database_cleaner-active_record"
+  gem "factory_bot_rails"
   gem "listen", "~> 3.2"
   gem "rails_best_practices", "~> 1.20"
+  gem "rspec-rails"
   gem "rubocop", "~> 0.89.1"
   gem "rubocop-rails", "~> 2.3.2", require: false
+  gem "shoulda-matchers", "~> 4.0"
+  gem "simplecov", require: false
   gem "spring"
   gem "spring-watcher-listen", "~> 2.0.0"
 end

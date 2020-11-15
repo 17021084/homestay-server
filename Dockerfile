@@ -10,7 +10,7 @@ COPY Gemfile /Gemfile
 
 COPY Gemfile.lock ./Gemfile.lock
 
-RUN bundle install --without development test
+RUN bundle install
 
 RUN bundle update
 

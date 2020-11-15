@@ -1,5 +1,6 @@
 class Api::V1::UsersController < ApiController
   before_action :authenticate_token!, only: :update
+
   def create
     @user = User.create user_create_params
 
@@ -24,6 +25,7 @@ class Api::V1::UsersController < ApiController
         error: @user.errors
       }, status: :unprocessable_entity
     end
+
     render json: {sucess: false, message: "Update invalid user"}, status: :bad_request
   end
 
