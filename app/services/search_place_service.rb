@@ -34,9 +34,7 @@ class SearchPlaceService < ApplicationService
     reserved_places = []
 
     all_places.each do |place|
-      next if place.check_in_date.nil? ||
-              (place.check_out_date.in_time_zone < check_in_date.in_time_zone) ||
-              (check_out_date.in_time_zone < place.check_in_date.in_time_zone)
+      next if is_valiable_place? place, check_in_date, check_out_date
 
       reserved_places.push place.id
     end
@@ -46,12 +44,6 @@ class SearchPlaceService < ApplicationService
       all_places.delete_if{|place| place[:id] == reserved_id}
     end
     all_places
-  end
-
-  def is_date_valid?
-    return false if @check_in_date.in_time_zone.past?
-
-    @check_in_date.in_time_zone < @check_out_date.in_time_zone
   end
 
   def is_location_valid? city_id, district_id

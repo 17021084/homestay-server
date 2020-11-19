@@ -1,0 +1,12 @@
+HomeStay App
+Hello <%= @user.full_name%>
+You booked <%= @place.name%>homeStay
+Address: <%= @place.address %>
+Check in date at:<%= @booking.check_in_date %>
+Check out date at: <%= @booking.check_out_date%>
+Number of night:<%= nights=(@booking.check_out_date.to_date - @booking.check_in_date.to_date).to_i%>
+Base Price:<%= @place.base_price %>
+Extra Fee:<%= @place.extra_fee %>
+Total price = base price* number of nights  + extra fee : <%= nights*@place.base_price+@place.extra_fee %>
+Click on the link below to learn more room information:  <a href= <%=@url %> >
+We appreciate your choosing our services

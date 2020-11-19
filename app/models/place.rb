@@ -18,4 +18,5 @@ class Place < ApplicationRecord
   scope :location, ->(district_id){where location_id: district_id}
   scope :max_guests, ->(guests){where(Settings.query.max_guests, guests)}
   scope :get_all_places, ->{select(Settings.query.all_places)}
+  scope :get_bookings_by_place, ->(place_id){left_joins(:bookings).where(Settings.query.place_id, place_id)}
 end

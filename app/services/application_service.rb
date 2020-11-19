@@ -1,6 +1,20 @@
 class ApplicationService
   def format_date date_time
-    date_time.in_time_zone
+    date_time.to_time_zone.strftime "%Y-%m-%d %H:%M:%S"
+  rescue ArgumentError
+    nil
+  end
+
+  def is_valiable_place? place, check_in_date, check_out_date
+    place.check_in_date.nil? ||
+      (place.check_out_date.in_time_zone < check_in_date.in_time_zone) ||
+      (check_out_date.in_time_zone < place.check_in_date.in_time_zone)
+  end
+
+  def is_date_valid?
+    return false if @check_in_date.in_time_zone.past?
+
+    @check_in_date.in_time_zone < @check_out_date.in_time_zone
   rescue ArgumentError
     nil
   end
