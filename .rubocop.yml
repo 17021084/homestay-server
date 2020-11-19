@@ -30,6 +30,7 @@ AllCops:
     - "config/**/*"
     - "app/views/layouts/*"
     - "app/views/user_mailer/*"
+    - "app/views/booking_mailer/*"
     - "app/assets/**/*"
     - "app/mailers/**"
     - "app/javascript/**/*"

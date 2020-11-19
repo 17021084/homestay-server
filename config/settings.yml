@@ -16,3 +16,4 @@ pagination:
 query:
   max_guests: "max_guests >= ?"
   all_places: "bookings.check_in_date,bookings.check_out_date , places.*"
+  place_id: "places.id = ?"
