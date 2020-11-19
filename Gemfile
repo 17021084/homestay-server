@@ -18,16 +18,13 @@ gem "rack-cors"
 gem "rails", "~> 6.0.3", ">= 6.0.3.3"
 gem "ransack"
 
-group :test do
-  gem "byebug", platforms: [:mri, :mingw, :x64_mingw]
-  gem "hirb"
-  gem "irb"
-end
-
 group :development do
   gem "airborne"
+  gem "byebug", platforms: [:mri, :mingw, :x64_mingw]
   gem "database_cleaner-active_record"
   gem "factory_bot_rails"
+  gem "hirb"
+  gem "irb"
   gem "listen", "~> 3.2"
   gem "rails_best_practices", "~> 1.20"
   gem "rspec-rails"
