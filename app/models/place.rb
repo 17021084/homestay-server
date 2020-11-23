@@ -19,4 +19,7 @@ class Place < ApplicationRecord
   scope :max_guests, ->(guests){where(Settings.query.max_guests, guests)}
   scope :get_all_places, ->{select(Settings.query.all_places)}
   scope :get_bookings_by_place, ->(place_id){left_joins(:bookings).where(Settings.query.place_id, place_id)}
+  scope :get_all_bookings_history, ->{select(Settings.query.all_places).joins(:bookings)}
+  scope :get_by_user_id, ->(user_id){where(Settings.query.user_id, user_id)}
+  scope :order_by_check_in_date, ->{order(Settings.query.order_by_check_in_date)}
 end

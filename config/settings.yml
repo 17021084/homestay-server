@@ -13,7 +13,11 @@ validations:
     password_maxlength: 15
 pagination:
   per_page: 20
+delay_mail:
+  bookings: 120
 query:
   max_guests: "max_guests >= ?"
-  all_places: "bookings.check_in_date,bookings.check_out_date , places.*"
+  all_places: "bookings.*, places.*"
   place_id: "places.id = ?"
+  order_by_check_in_date: "bookings.check_in_date DESC"
+  user_id: "bookings.user_id = ?"
