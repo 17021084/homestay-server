@@ -15,7 +15,7 @@ Rails.application.routes.draw do
 
       namespace :travellers do
         resources :places, only: [:index, :show]
-        resources :bookings, only: [:create, :index]
+        resources :bookings, only: [:index, :create]
       end
     end
   end
