@@ -21,3 +21,4 @@ query:
   place_id: "places.id = ?"
   order_by_check_in_date: "bookings.check_in_date DESC"
   user_id: "bookings.user_id = ?"
+  can_review: "user_id = ? and place_id = ? and check_out_date <= ?"

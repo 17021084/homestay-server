@@ -8,4 +8,5 @@ class Booking < ApplicationRecord
   validates :guests, presence: true
   validates :check_in_date, presence: true
   validates :check_out_date, presence: true
+  scope :can_review, ->(user_id, place_id){where(Settings.query.can_review, user_id, place_id, Time.zone.now).limit(1)}
 end
