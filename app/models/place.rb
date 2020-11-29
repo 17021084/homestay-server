@@ -22,4 +22,6 @@ class Place < ApplicationRecord
   scope :get_all_bookings_history, ->{select(Settings.query.all_places).joins(:bookings)}
   scope :get_by_user_id, ->(user_id){where(Settings.query.user_id, user_id)}
   scope :order_by_check_in_date, ->{order(Settings.query.order_by_check_in_date)}
+  scope :get_all_bookmarks, ->(user_id){joins(:bookmarks).where(Settings.query.get_all_bookmarks, user_id)}
+  scope :order_bookmarks, ->{order(Settings.query.order_bookmarks)}
 end
