@@ -17,6 +17,9 @@ Rails.application.routes.draw do
         resources :places, only: [:index, :show]
         resources :bookings, only: [:create, :index]
         resources :reviews, only: [:create, :update, :destroy]
+        resources :bookmarks, only: [:index]
+        delete ":place_id/bookmarks", to: "bookmarks#destroy"
+        post ":place_id/bookmarks", to: "bookmarks#create"
       end
     end
   end

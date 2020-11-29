@@ -22,3 +22,5 @@ query:
   order_by_check_in_date: "bookings.check_in_date DESC"
   user_id: "bookings.user_id = ?"
   can_review: "user_id = ? and place_id = ? and check_out_date <= ?"
+  get_all_bookmarks: "bookmarks.user_id = ?"
+  order_bookmarks: "bookmarks.created_at DESC"
