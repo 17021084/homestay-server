@@ -16,7 +16,7 @@ class Api::V1::Travellers::ReviewsController < ApiController
   rescue ActiveRecord::RecordNotUnique
     render json: {
       success: false,
-      message: "One user review one place just once"
+      message: "One user review just one place"
     }, status: :internal_server_error
   end
 
@@ -69,8 +69,8 @@ class Api::V1::Travellers::ReviewsController < ApiController
   end
 
   def can_review?
-    booking = Booking.can_review(@current_user.id, params[:place_id]).to_a
-    return unless booking.length
+    booking = Booking.can_review(@current_user.id, params[:place_id])
+    return unless booking.empty?
 
     render json: {
       success: false,
