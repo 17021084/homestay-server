@@ -5,7 +5,7 @@ class Api::V1::UsersController < ApiController
     @user = User.create user_create_params
 
     if @user.save
-      @token = @user.register
+      @user.register
       render :create, status: :ok
     else
       validation_errors = @user.errors.full_messages
@@ -23,7 +23,7 @@ class Api::V1::UsersController < ApiController
       return render json: {
         success: false,
         error: @user.errors
-      }, status: :unprocessable_entity
+      }, status: :bad_request
     end
 
     render json: {sucess: false, message: "Update invalid user"}, status: :bad_request

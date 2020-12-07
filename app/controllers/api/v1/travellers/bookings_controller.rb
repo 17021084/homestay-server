@@ -7,7 +7,7 @@ class Api::V1::Travellers::BookingsController < ApiController
   end
 
   def create
-    @booking_response = BookPlaceService.new(booking_params, @current_user.id).perform
+    @booking_response = BookingPlaceService.new(booking_params, @current_user.id).perform
 
     if @booking_response[:success]
       BookingMailer.booking_place(@current_user, @booking_response[:place], @booking_response[:booking])

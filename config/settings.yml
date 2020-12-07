@@ -14,7 +14,7 @@ validations:
 pagination:
   per_page: 20
 delay_mail:
-  bookings: 120
+  bookings: 30
 query:
   max_guests: "max_guests >= ?"
   all_places: "bookings.*, places.*"
