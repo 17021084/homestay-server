@@ -34,7 +34,7 @@ class SearchPlaceService < ApplicationService
     reserved_places = []
 
     all_places.each do |place|
-      next if is_valiable_place? place, check_in_date, check_out_date
+      next if is_place_available? place, check_in_date, check_out_date
 
       reserved_places.push place.id
     end

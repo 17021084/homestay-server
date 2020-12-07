@@ -44,7 +44,6 @@ class User < ApplicationRecord
 
   def register
     UserMailer.account_activation(self).deliver_now unless activated
-    JsonWebToken.encode id: id, is_host: false
   end
 
   def check_valid attribute, token
@@ -65,8 +64,12 @@ class User < ApplicationRecord
   end
 
   def activate
-    update(activated: true)
-    update(activated_at: Time.zone.now)
+    update activated: true
+    update activated_at: Time.zone.now
+  end
+
+  def switch_to_host
+    update is_host: true
   end
 
   def self.new_token

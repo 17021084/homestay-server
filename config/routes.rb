@@ -13,6 +13,10 @@ Rails.application.routes.draw do
         get "/me", to: "authentication#show"
       end
 
+      scope :location do
+        get "/districts/:id", to: "location#show"
+      end
+
       namespace :travellers do
         resources :places, only: [:index, :show]
         resources :bookings, only: [:create, :index]
@@ -20,6 +24,10 @@ Rails.application.routes.draw do
         resources :bookmarks, only: [:index]
         delete ":place_id/bookmarks", to: "bookmarks#destroy"
         post ":place_id/bookmarks", to: "bookmarks#create"
+      end
+
+      namespace :hosts do
+        put "/switching", to: "switching#edit"
       end
     end
   end
