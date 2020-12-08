@@ -1,5 +1,6 @@
 class Place < ApplicationRecord
   SEARCHING_PARAMS = [:city_id, :district_id, :check_in_date, :check_out_date, :guests].freeze
+  CREATE_PARAMS = [].freeze
 
   has_one_attached :thumbnail
   has_many_attached :homestay_photos
@@ -10,6 +11,22 @@ class Place < ApplicationRecord
   has_many :reviews, dependent: :destroy
   belongs_to :host, class_name: User.name, foreign_key: :host_id
   belongs_to :location, class_name: District.name, foreign_key: :location_id
+
+  validates :host_id, presence: true
+  validates :location_id, presence: true
+  validates :name, presence: true,
+                   length: {minimum: Settings.validations.place.name_minlength,
+                            maximum: Settings.validations.place.name_maxlength}
+  validates :bedroom_number, presence: true, numericality: {only_integer: true, greater_than: 0, less_than: 10}
+  validates :bathroom_number, presence: true, numericality: {only_integer: true, greater_than: 0, less_than: 5}
+  validates :max_guests, presence: true, numericality: {only_integer: true, greater_than: 1, less_than: 20}
+  validates :latitude, presence: true, numericality: true
+  validates :longitude, presence: true, numericality: true
+  validates :address, presence: true
+  validates :base_price, presence: true, numericality: {greater_than: 10}
+  validates :extra_fee, presence: true, numericality: {greater_than: 0}
+  validates :thumbnail, presence: true
+  validates :homestay_photos, presence: true
 
   delegate :name, to: :location, prefix: true
   delegate :full_name, to: :host, prefix: true

@@ -11,6 +11,9 @@ validations:
     phone_maxlength: 11
     password_minlength: 6
     password_maxlength: 15
+  place:
+    name_minlength: 10
+    name_maxlength: 100
 pagination:
   per_page: 20
 delay_mail:

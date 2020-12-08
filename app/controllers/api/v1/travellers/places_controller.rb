@@ -1,13 +1,13 @@
 class Api::V1::Travellers::PlacesController < ApplicationController
   before_action :find_place, only: :show
 
-  def index
+  def create
     @places_response = SearchPlaceService.new(searching_params).perform
     if @places_response[:success]
       @places_data = @places_response[:data]
       @places_count = @places_response[:count]
 
-      render :index, status: :ok
+      render :create, status: :ok
     else
       render json: {success: @places_response[:success], message: @places_response[:message]}, status: :bad_request
     end

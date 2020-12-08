@@ -1,6 +1,6 @@
 class Api::V1::Hosts::SwitchingController < ApiController
   before_action :authenticate_token!, only: [:edit]
-  before_action :is_host?, only: [:edit]
+  before_action :is_normal_user?, only: [:edit]
 
   def edit
     @current_user.switch_to_host
@@ -15,7 +15,7 @@ class Api::V1::Hosts::SwitchingController < ApiController
 
   private
 
-  def is_host?
+  def is_normal_user?
     return unless @current_user.is_host
 
     render json: {success: false, message: "You are already a host"}, status: :forbidden

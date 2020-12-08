@@ -18,7 +18,7 @@ Rails.application.routes.draw do
       end
 
       namespace :travellers do
-        resources :places, only: [:index, :show]
+        resources :places, only: [:create, :show]
         resources :bookings, only: [:create, :index]
         resources :reviews, only: [:create, :update, :destroy]
         resources :bookmarks, only: [:index]
@@ -27,7 +27,9 @@ Rails.application.routes.draw do
       end
 
       namespace :hosts do
+        resources :places, only: [:index, :create]
         put "/switching", to: "switching#edit"
+        get "/extra_info", to: "extra_info#index"
       end
     end
   end

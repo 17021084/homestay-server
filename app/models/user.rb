@@ -37,6 +37,8 @@ class User < ApplicationRecord
 
   validates :is_host, inclusion: [true, false]
 
+  delegate :is_super, to: :host_information
+
   before_save :downcase_email
   before_create :create_activation_digest
 
