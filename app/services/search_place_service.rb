@@ -10,12 +10,9 @@ class SearchPlaceService < ApplicationService
   end
 
   def perform
-    # byebug
-    # return {success: false, message: "Invalid date!!"} unless is_date_valid?
+    return {success: false, message: "Invalid date!!"} unless is_date_valid?
 
     return {success: false, message: "Invalid location"} unless is_location_valid? @city_id, @district_id
-
-    # byebug
 
     all_places = get_places @district_id, @guests
     available_places = get_available_places all_places, @check_in_date, @check_out_date
@@ -30,6 +27,8 @@ class SearchPlaceService < ApplicationService
          .get_all_places
          .location(district_id)
          .max_guests(guests)
+         .with_attach_thumbnail
+         .includes(:location, :host)
          .to_a
   end
 

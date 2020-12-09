@@ -58,7 +58,7 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
       zeitwerk (~> 2.2, >= 2.2.2)
-    airborne (0.3.5)
+    airborne (0.3.6)
       activesupport
       rack
       rack-test (>= 1.1.0, < 2.0)

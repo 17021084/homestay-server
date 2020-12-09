@@ -3,7 +3,7 @@ class Api::V1::Hosts::PlacesController < ApiController
   before_action :is_host?, only: [:index, :create]
 
   def index
-    @places = @current_user.places
+    @places = @current_user.places.with_attach_thumbnail
     render :index
   end
 
