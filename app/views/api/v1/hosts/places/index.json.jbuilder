@@ -6,6 +6,8 @@ json.data do
     json.name place.name
     json.address place.address + ", " + place.location_name
     json.rating place.rating
+    json.base_price place.base_price
+    json.reviews_count place.reviews.count
     json.thumbnail rails_blob_url(place.thumbnail) if place.thumbnail.attached?
   end
 end
