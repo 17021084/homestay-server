@@ -22,7 +22,7 @@ class Place < ApplicationRecord
   validates :bedroom_number, presence: true,
                              numericality: {only_integer: true, greater_than: 0, less_than_or_equal_to: 10}
   validates :bathroom_number, presence: true,
-                              numericality: {only_integer: true, greater_than: 0, greater_than_or_equal_to: 5}
+                              numericality: {only_integer: true, greater_than: 0, less_than_or_equal_to: 5}
   validates :max_guests, presence: true, numericality: {only_integer: true, greater_than: 0, less_than_or_equal_to: 20}
   validates :latitude, presence: true, numericality: true
   validates :longitude, presence: true, numericality: true
