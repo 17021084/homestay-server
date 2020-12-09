@@ -1,69 +1,46 @@
 class CreatePlaceService < ApplicationService
-  def initialize params, user_id
-    @place_id = params[:place_id]
-    @user_id = user_id
-    @check_in_date = params[:check_in_date]
-    @check_out_date = params[:check_out_date]
-    @guests = params[:guests]
+  def initialize params, host_id
+    @host_id = host_id
+    @rules = params[:rules]
+    @amenities = params[:amenities]
     @params = params
   end
 
   def perform
-    return {success: false, message: "Invalid date"} unless is_date_valid?
-
-    return {success: false, message: "You own this place!!"} if is_owned? @user_id, @place_id
-
-    place = check_available @place_id, @check_in_date, @check_out_date
-
-    case place
-    when :invalid_place
-      {success: false, message: "Invalid place"}
-    when :cant_book
-      {success: false, message: "Place has been booked"}
-    when :over_max_guests
-      {success: false, message: "Over max guests"}
+    place_params = create_params(@host_id, @params, :amenities, :rules)
+    place = Place.create place_params
+    if place.save
+      place_rules = get_rules @rules
+      place_amenities = get_amenities @amenities
+      place.rules << place_rules
+      place.amenities << place_amenities
+      {success: true, place: place}
     else
-      @params[:total_price] = get_total_price @check_in_date, @check_out_date, place
-      @params[:user_id] = @user_id
-
-      booking = Booking.create @params
-      if booking.save
-        {success: true, booking: booking, place: place}
-      else
-        {success: false, message: booking.errors.full_messages}
-      end
+      {success: false, messages: place.errors.full_messages}
     end
+  rescue ActiveSupport::MessageVerifier::InvalidSignature
+    {success: false, messages: "Invalid file"}
   end
 
   private
 
-  def is_owned? user_id, place_id
-    cur_host = get_host_place place_id
-    return true if user_id == cur_host
-  end
-
-  def check_available place_id, check_in_date, check_out_date
-    checked_times = Place.get_all_places.get_bookings_by_place(place_id)
-    return :invalid_place if checked_times.empty?
-
-    checked_times.each do |place|
-      next if is_place_available? place, check_in_date, check_out_date
-
-      return :cant_book
+  def create_params host_id, input_params, *except_params
+    is_verified = is_super_host? host_id
+    except_params.each do |param|
+      input_params.extract!(param)
     end
-    return :over_max_guests if @guests.nil? || checked_times[0].max_guests < @guests
-
-    checked_times[0]
+    input_params.merge({is_verified: is_verified, host_id: host_id, rating: 0})
   end
 
-  def get_total_price check_in_date, check_out_date, place
-    nights = (check_out_date.to_date - check_in_date.to_date).to_i
-    total_price = place.base_price * nights + place.extra_fee
-    total_price.round 2
+  def get_rules ids
+    Rule.search_by_id ids
   end
 
-  def get_host_place place_id
-    place = Place.find_by id: place_id
-    place.host.try(:id)
+  def get_amenities ids
+    Amenity.search_by_id ids
+  end
+
+  def is_super_host? host_id
+    User.find_by(id: host_id).try(:is_super)
   end
 end

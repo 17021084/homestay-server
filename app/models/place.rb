@@ -1,6 +1,8 @@
 class Place < ApplicationRecord
   SEARCHING_PARAMS = [:city_id, :district_id, :check_in_date, :check_out_date, :guests].freeze
-  CREATE_PARAMS = [].freeze
+  CREATE_PARAMS = [:location_id, :name, :bedroom_number, :bathroom_number,
+                   :max_guests, :latitude, :longitude, :address, :base_price,
+                   :extra_fee, :thumbnail, homestay_photos: [], rules: [], amenities: []].freeze
 
   has_one_attached :thumbnail
   has_many_attached :homestay_photos
@@ -25,8 +27,10 @@ class Place < ApplicationRecord
   validates :address, presence: true
   validates :base_price, presence: true, numericality: {greater_than: 10}
   validates :extra_fee, presence: true, numericality: {greater_than: 0}
-  validates :thumbnail, presence: true
-  validates :homestay_photos, presence: true
+  validates :thumbnail, presence: true, content_type: {in: %w(image/jpeg image/gif image/png image/jpg),
+                                                       message: "must be a valid image format"}
+  validates :homestay_photos, presence: true, content_type: {in: %w(image/jpeg image/gif image/png image/jpg),
+                                                             message: "must be a valid image format"}
 
   delegate :name, to: :location, prefix: true
   delegate :full_name, to: :host, prefix: true
