@@ -45,4 +45,5 @@ class Place < ApplicationRecord
   scope :order_by_check_in_date, ->{order(Settings.query.order_by_check_in_date)}
   scope :get_all_bookmarks, ->(user_id){joins(:bookmarks).where(Settings.query.get_all_bookmarks, user_id)}
   scope :order_bookmarks, ->{order(Settings.query.order_bookmarks)}
+  scope :with_attach_thumbnail, ->{includes(thumbnail_attachment: :blob)}
 end
