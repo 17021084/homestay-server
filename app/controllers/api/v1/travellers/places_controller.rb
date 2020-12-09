@@ -20,7 +20,8 @@ class Api::V1::Travellers::PlacesController < ApplicationController
   private
 
   def find_place
-    @place = Place.find_by id: params[:id]
+    @place = Place.with_attach_thumbnail
+                  .find_by id: params[:id]
     return if @place
 
     render json: {success: false, message: "Place not found"}, status: :not_found

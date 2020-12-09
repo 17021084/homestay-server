@@ -3,8 +3,8 @@ class Api::V1::Hosts::PlacesController < ApiController
   before_action :is_host?, only: [:index, :create]
 
   def index
-    @places = @current_user.places
-    render :index
+    @places = @current_user.places.with_attach_thumbnail
+    render :index, status: :ok
   end
 
   def create
@@ -13,7 +13,7 @@ class Api::V1::Hosts::PlacesController < ApiController
       @place_detail = @create_response[:place]
       render :create
     else
-      render json: {success: false, messages: @create_response[:messages]}
+      render json: {success: false, messages: @create_response[:messages]}, status: :bad_request
     end
   end
 

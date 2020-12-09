@@ -5,7 +5,7 @@ class Api::V1::Hosts::ExtraInfoController < ApiController
   def index
     @rules = Rule.all
     @amenities = Amenity.all
-    render :index
+    render :index, status: :ok
   end
 
   private

@@ -1,15 +1,15 @@
 class Api::V1::LocationController < ApiController
-  def show
-    cur_district = District.find_by id: params[:id]
+  def index
+    @place_number_by_city = Place.get_place_number_by_city
+    render json: {success: true, data: @place_number_by_city}, status: :ok
+  end
 
-    render json: {success: true,
-                  data: {
-                    name: cur_district.name,
-                    longitude: cur_district.longitude,
-                    latitude: cur_district.latitude
-                  }},
-    status: :ok
-  rescue NoMethodError
-    render json: {success: false, message: "Invalid location"}
+  def show
+    @places = Place.with_attach_thumbnail
+                   .includes(:location, :host)
+                   .get_places_by_city(params[:id])
+                   .order(rating: :desc)
+
+    render :show, status: :ok
   end
 end

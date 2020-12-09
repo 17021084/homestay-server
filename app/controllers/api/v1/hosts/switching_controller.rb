@@ -11,7 +11,7 @@ class Api::V1::Hosts::SwitchingController < ApiController
       data: @current_user.attributes.except("created_at", "updated_at", "password_digest", "activation_digest",
                                             "activated_at", "reset_digest", "reset_sent_at"),
       token: refresh_token
-    }
+    }, status: :ok
   end
 
   private

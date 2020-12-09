@@ -14,7 +14,9 @@ Rails.application.routes.draw do
       end
 
       scope :location do
-        get "/districts/:id", to: "location#show"
+        get "/cities", to: "location#index"
+        get "/cities/:id", to: "location#show"
+        get "/recommended/:id", to: "recommended#show"
       end
 
       namespace :travellers do
