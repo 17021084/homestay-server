@@ -19,14 +19,16 @@ class Place < ApplicationRecord
   validates :name, presence: true,
                    length: {minimum: Settings.validations.place.name_minlength,
                             maximum: Settings.validations.place.name_maxlength}
-  validates :bedroom_number, presence: true, numericality: {only_integer: true, greater_than: 0, less_than: 10}
-  validates :bathroom_number, presence: true, numericality: {only_integer: true, greater_than: 0, less_than: 5}
-  validates :max_guests, presence: true, numericality: {only_integer: true, greater_than: 1, less_than: 20}
+  validates :bedroom_number, presence: true,
+                             numericality: {only_integer: true, greater_than: 0, less_than_or_equal_to: 10}
+  validates :bathroom_number, presence: true,
+                              numericality: {only_integer: true, greater_than: 0, greater_than_or_equal_to: 5}
+  validates :max_guests, presence: true, numericality: {only_integer: true, greater_than: 0, less_than_or_equal_to: 20}
   validates :latitude, presence: true, numericality: true
   validates :longitude, presence: true, numericality: true
   validates :address, presence: true
-  validates :base_price, presence: true, numericality: {greater_than: 10}
-  validates :extra_fee, presence: true, numericality: {greater_than: 0}
+  validates :base_price, presence: true, numericality: {greater_than_or_equal_to: 10}
+  validates :extra_fee, presence: true, numericality: {greater_than_or_equal_to: 0}
   validates :thumbnail, presence: true, content_type: {in: %w(image/jpeg image/gif image/png image/jpg),
                                                        message: "must be a valid image format"}
   validates :homestay_photos, presence: true, content_type: {in: %w(image/jpeg image/gif image/png image/jpg),

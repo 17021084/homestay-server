@@ -5,7 +5,7 @@ class Api::V1::RecommendedController < ApiController
   end
 
   def show
-    if params[:id] == "3" || params[:id] == "25"
+    if params[:id] == "5" || params[:id] == "25"
       @places = Place.with_attach_thumbnail
                      .includes(:location, :host)
                      .order(rating: :desc)
