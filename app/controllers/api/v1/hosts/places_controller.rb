@@ -8,17 +8,20 @@ class Api::V1::Hosts::PlacesController < ApiController
   end
 
   def create
-    render json: {success: true}
+    @create_response = CreatePlaceService.new(create_place_params, @current_user.id).perform
+    if @create_response[:success]
+      @place_detail = @create_response[:place]
+      render :create
+    else
+      render json: {success: false, messages: @create_response[:messages]}
+    end
   end
 
   private
 
-  # def find_place
-  #   @place = Place.find_by id: params[:id]
-  #   return if @place
-
-  #   render json: {success: false, message: "Place not found"}, status: :not_found
-  # end
+  def create_place_params
+    params.permit Place::CREATE_PARAMS
+  end
 
   def is_host?
     return if @current_user.is_host
