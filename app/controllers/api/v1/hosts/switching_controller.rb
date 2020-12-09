@@ -4,6 +4,7 @@ class Api::V1::Hosts::SwitchingController < ApiController
 
   def edit
     @current_user.switch_to_host
+    HostInformation.create(user: @current_user, is_super: 0)
     refresh_token = JsonWebToken.encode id: @current_user.id, is_host: @current_user.is_host
     render json: {
       success: true,
