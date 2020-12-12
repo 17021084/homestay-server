@@ -8,6 +8,6 @@ class Api::V1::AccountActivationsController < ApplicationController
   private
 
   def redirect_to_client
-    redirect_to ENV["CLIENT_URL"], allow_other_host: false
+    redirect_to ENV["CLIENT_REDIRECT_URL"], allow_other_host: false
   end
 end

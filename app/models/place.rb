@@ -48,6 +48,6 @@ class Place < ApplicationRecord
   scope :get_all_bookmarks, ->(user_id){joins(:bookmarks).where(Settings.query.get_all_bookmarks, user_id)}
   scope :order_bookmarks, ->{order(Settings.query.order_bookmarks)}
   scope :get_place_number_by_city, ->{select(Settings.query.place_numb_by_city).joins(location: :city).group(:city_id)}
-  scope :get_places_by_city, ->(city_id){joins(location: :city).where("cities.id = ?", city_id)}
+  scope :get_places_by_city, ->(city_id){joins(location: :city).where(Settings.query.city_id, city_id)}
   scope :with_attach_thumbnail, ->{includes(thumbnail_attachment: :blob)}
 end

@@ -6,12 +6,14 @@ class CreatePlaceService < ApplicationService
     @params = params
   end
 
+  attr_reader :host_id, :rules, :amenities, :params
+
   def perform
-    place_params = create_params(@host_id, @params, :amenities, :rules)
+    place_params = create_params(host_id, params, :amenities, :rules)
     place = Place.create place_params
     if place.save
-      place_rules = get_rules @rules
-      place_amenities = get_amenities @amenities
+      place_rules = get_rules rules
+      place_amenities = get_amenities amenities
       place.rules << place_rules
       place.amenities << place_amenities
       {success: true, place: place}

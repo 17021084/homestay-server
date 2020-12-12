@@ -28,3 +28,4 @@ query:
   get_all_bookmarks: "bookmarks.user_id = ?"
   order_bookmarks: "bookmarks.created_at DESC"
   place_numb_by_city: "cities.id, COUNT(*) AS total , cities.name"
+  city_id: "cities.id = ?"
