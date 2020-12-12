@@ -8,12 +8,14 @@ class BookingPlaceService < ApplicationService
     @params = params
   end
 
+  attr_reader :place_id, :user_id, :check_in_date, :check_out_date, :guests, :params
+
   def perform
     return {success: false, message: "Invalid date"} unless is_date_valid?
 
-    return {success: false, message: "You own this place!!"} if is_owned? @user_id, @place_id
+    return {success: false, message: "You own this place!!"} if is_owned? user_id, place_id
 
-    place = check_available @place_id, @check_in_date, @check_out_date
+    place = check_available place_id, check_in_date, check_out_date
 
     case place
     when :invalid_place
@@ -23,10 +25,10 @@ class BookingPlaceService < ApplicationService
     when :over_max_guests
       {success: false, message: "Over max guests"}
     else
-      @params[:total_price] = get_total_price @check_in_date, @check_out_date, place
-      @params[:user_id] = @user_id
+      params[:total_price] = get_total_price check_in_date, check_out_date, place
+      params[:user_id] = user_id
 
-      booking = Booking.create @params
+      booking = Booking.create params
       if booking.save
         {success: true, booking: booking, place: place}
       else
@@ -51,7 +53,7 @@ class BookingPlaceService < ApplicationService
 
       return :cant_book
     end
-    return :over_max_guests if @guests.nil? || checked_times[0].max_guests < @guests
+    return :over_max_guests if guests.nil? || checked_times[0].max_guests < guests
 
     checked_times[0]
   end

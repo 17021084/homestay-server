@@ -12,7 +12,7 @@ class ApplicationService
   end
 
   def is_date_valid?
-    return false if @check_in_date.in_time_zone.past?
+    return false if @check_in_date.in_time_zone < Time.zone.now.midnight
 
     @check_in_date.in_time_zone < @check_out_date.in_time_zone
   rescue ArgumentError, NoMethodError

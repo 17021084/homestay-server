@@ -5,17 +5,17 @@ class SearchPlaceService < ApplicationService
     @check_in_date = params[:check_in_date]
     @check_out_date = params[:check_out_date]
     @guests = params[:guests]
-    @page = params[:page]
-    @per = params[:per]
   end
+
+  attr_reader :city_id, :district_id, :check_out_date, :check_in_date, :guests
 
   def perform
     return {success: false, message: "Invalid date!!"} unless is_date_valid?
 
-    return {success: false, message: "Invalid location"} unless is_location_valid? @city_id, @district_id
+    return {success: false, message: "Invalid location"} unless is_location_valid? city_id, district_id
 
-    all_places = get_places @district_id, @guests
-    available_places = get_available_places all_places, @check_in_date, @check_out_date
+    all_places = get_places district_id, guests
+    available_places = get_available_places all_places, check_in_date, check_out_date
 
     {success: true, count: available_places.length, data: available_places}
   end
