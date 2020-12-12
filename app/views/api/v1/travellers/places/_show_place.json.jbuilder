@@ -14,3 +14,5 @@ json.extra_fee place.extra_fee
 json.rating place.rating
 json.is_archived place.is_archived
 json.location place.location_name
+json.location_id place.location_id
+json.city_id place.location.city_id

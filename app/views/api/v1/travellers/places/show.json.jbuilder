@@ -15,10 +15,12 @@ json.data do
   end
   json.review_count @place.reviews.count
   json.rules @place.rules do |rule|
+    json.id rule.id
     json.name rule.name
   end
   json.rule_count @place.rules.count
   json.amenities @place.amenities do |amenity|
+    json.id amenity.id
     json.service_type amenity.service_type
     json.name amenity.name
   end
