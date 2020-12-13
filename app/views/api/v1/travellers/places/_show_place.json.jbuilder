@@ -11,7 +11,11 @@ json.longitude place.longitude
 json.address place.address
 json.base_price place.base_price
 json.extra_fee place.extra_fee
-json.rating place.rating
+if place.reviews.count.positive?
+  json.rating place.reviews.sum(:rating) * 1.0 / place.reviews.count
+else
+  json.rating 0.0
+end
 json.is_archived place.is_archived
 json.location place.location_name
 json.location_id place.location_id

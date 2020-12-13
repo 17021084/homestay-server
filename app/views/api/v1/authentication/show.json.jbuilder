@@ -14,5 +14,9 @@ json.data do
     json.is_super @current_user.is_super
     json.hosted_count @current_user.places.count
     json.hosted @current_user.places.pluck :id
+  else
+    json.is_super false
+    json.hosted_count 0
+    json.hosted []
   end
 end
