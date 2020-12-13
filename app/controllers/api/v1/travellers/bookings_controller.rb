@@ -6,6 +6,7 @@ class Api::V1::Travellers::BookingsController < ApiController
                              .get_all_bookings_history
                              .get_by_user_id(@current_user.id)
                              .order_by_check_in_date
+                             .uniq
     render :index, status: :ok
   end
 
