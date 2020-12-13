@@ -13,7 +13,10 @@ class Api::V1::Travellers::BookingsController < ApiController
     @booking_response = BookingPlaceService.new(booking_params, @current_user.id).perform
 
     if @booking_response[:success]
-      BookingMailer.booking_place(@current_user, @booking_response[:place], @booking_response[:booking])
+      BookingMailer.notify_user(@current_user, @booking_response[:place], @booking_response[:booking])
+                   .deliver_later(wait: Settings.delay_mail.bookings.seconds)
+
+      BookingMailer.notify_host(@current_user, @booking_response[:place], @booking_response[:booking])
                    .deliver_later(wait: Settings.delay_mail.bookings.seconds)
       render :create, status: :ok
     else

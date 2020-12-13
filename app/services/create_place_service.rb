@@ -9,7 +9,7 @@ class CreatePlaceService < ApplicationService
   attr_reader :host_id, :rules, :amenities, :params
 
   def perform
-    place_params = create_params(host_id, params, :amenities, :rules)
+    place_params = create_params(host_id, params, amenities, rules)
     place = Place.create place_params
     if place.save
       place_rules = get_rules rules

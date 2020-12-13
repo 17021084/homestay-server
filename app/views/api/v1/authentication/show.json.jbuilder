@@ -8,6 +8,8 @@ json.data do
   json.city_id @current_user.city_id
   json.bookmark_count @current_user.bookmarks.count
   json.bookmarks @current_user.bookmarks.pluck :place_id
+  json.booking_places_count @current_user.bookings.pluck(:place_id).uniq.length
+  json.booking_places @current_user.bookings.pluck(:place_id).uniq
   if @current_user.is_host
     json.is_super @current_user.is_super
     json.hosted_count @current_user.places.count
